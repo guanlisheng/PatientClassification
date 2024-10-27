@@ -58,7 +58,7 @@ function renderApp() {
                     </label>
                     
                     <!-- Child-Pugh评分 -->
-                    <div class="form-group" id="childPughScoreContainer">
+                    <div class="form-group" id="childPughScoreContainer" style="flex-direction: column; gap: 10px;">
                         <label>Child-Pugh评分: 
                             <input id="childPughScore" type="number" value="7" min="5" max="15" required>
                         </label>
@@ -102,7 +102,7 @@ function renderApp() {
                         </select>
                     </label>
                     
-                    <div id="metastasisContainer" class="form-section">
+                    <div id="metastasisContainer" class="form-section" style="display: flex; flex-direction: column; gap: 10px;">
                         <label>转移病灶数量:
                             <input id="metastasisCount" type="number" value="0" min="0" required>
                         </label>
@@ -132,9 +132,10 @@ function toggleFields() {
     if (stage === "IIIa") {
         // 隐藏Child-Pugh相关选项
         childPughScoreContainer.style.display = "none";
-    } else {
-        // 显示Child-Pugh相关选项
+    } else if (stage === "IIIb") {
+        // 显示Child-Pugh相关选项，确保样式一致
         childPughScoreContainer.style.display = "flex";
+        childPughScoreContainer.style.gap = "10px"; // 调整元素间距
     }
 }
 
