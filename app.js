@@ -57,8 +57,9 @@ function renderApp() {
                         </select>
                     </label>
                     
-                    <div id="childPughContainer">
-                        <label>Child-Pugh评分:
+                    <!-- Child-Pugh评分 -->
+                    <div class="form-group" id="childPughScoreContainer">
+                        <label>Child-Pugh评分: 
                             <input id="childPughScore" type="number" value="7" min="5" max="15" required>
                         </label>
                         <label>Child-Pugh级别:
@@ -69,19 +70,18 @@ function renderApp() {
                         </label>
                     </div>
                     
+                    <!-- 其他信息 -->
                     <label>是否有肝外转移:
                         <select id="hasExtrahepaticMetastasis">
                             <option value="false">否</option>
                             <option value="true">是</option>
                         </select>
                     </label>
-                </div>
-                
-                <!-- 患者体力评分与肿瘤信息 -->
-                <div id="psScoreContainer" class="form-section">
+                    
                     <label>PS评分:
                         <input id="psScore" type="number" value="0" min="0" max="4" required>
                     </label>
+                    
                     <label>程氏分型:
                         <select id="portalVeinType">
                             <option value="I">I</option>
@@ -90,28 +90,28 @@ function renderApp() {
                             <option value="IV">IV</option>
                         </select>
                     </label>
+                    
                     <label>肿瘤数量:
                         <input id="tumorCount" type="number" value="2" min="1" required>
                     </label>
+                    
                     <label>肿瘤位置:
                         <select id="tumorLocation">
                             <option value="半肝">半肝</option>
                             <option value="全肝">全肝</option>
                         </select>
                     </label>
-                </div>
-                
-                <!-- 转移和受累器官信息 -->
-                <div id="metastasisContainer" class="form-section">
-                    <label>转移病灶数量:
-                        <input id="metastasisCount" type="number" value="0" min="0" required>
-                    </label>
-                    <label>受累器官数量:
-                        <input id="affectedOrgans" type="number" value="0" min="0" required>
-                    </label>
+                    
+                    <div id="metastasisContainer" class="form-section">
+                        <label>转移病灶数量:
+                            <input id="metastasisCount" type="number" value="0" min="0" required>
+                        </label>
+                        <label>受累器官数量:
+                            <input id="affectedOrgans" type="number" value="0" min="0" required>
+                        </label>
+                    </div>
                 </div>
 
-                <!-- 提交按钮和结果 -->
                 <button type="button" id="submit">分配队列</button>
                 <div id="result" class="result"></div>
             </form>
@@ -127,20 +127,14 @@ function renderApp() {
 
 function toggleFields() {
     const stage = document.getElementById("stage").value;
-    const childPughContainer = document.getElementById("childPughContainer");
-    const psScoreContainer = document.getElementById("psScoreContainer");
-    const metastasisContainer = document.getElementById("metastasisContainer");
+    const childPughScoreContainer = document.getElementById("childPughScoreContainer");
 
     if (stage === "IIIa") {
-        // 隐藏Child-Pugh评分、PS评分、转移病灶信息
-        childPughContainer.style.display = "none";
-        psScoreContainer.style.display = "none";
-        metastasisContainer.style.display = "none";
+        // 隐藏Child-Pugh相关选项
+        childPughScoreContainer.style.display = "none";
     } else {
-        // 显示所有选项
-        childPughContainer.style.display = "flex";
-        psScoreContainer.style.display = "flex";
-        metastasisContainer.style.display = "flex";
+        // 显示Child-Pugh相关选项
+        childPughScoreContainer.style.display = "flex";
     }
 }
 
