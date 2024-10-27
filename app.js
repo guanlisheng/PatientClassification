@@ -107,7 +107,7 @@ function renderApp() {
                     </label>
                 </div>
 
-                <div class="form-group">
+                <div id="tumorLocationContainer" class="form-group">
                     <label>肿瘤位置:
                         <select id="tumorLocation">
                             <option value="半肝">半肝</option>
@@ -147,16 +147,19 @@ function toggleFields() {
     const stage = document.getElementById("stage").value;
     const portalVeinTypeContainer = document.getElementById("portalVeinTypeContainer");
     const tumorCountContainer = document.getElementById("tumorCountContainer");
+    const tumorLocationContainer = document.getElementById("tumorLocationContainer");
     const metastasisContainer = document.getElementById("metastasisContainer");
 
     // 根据分期动态显示/隐藏特定字段
     if (stage === "IIIa") {
         portalVeinTypeContainer.style.display = "block";
         tumorCountContainer.style.display = "block";
+        tumorLocationContainer.style.display = "block";
         metastasisContainer.style.display = "none";
     } else if (stage === "IIIb") {
         portalVeinTypeContainer.style.display = "none";
         tumorCountContainer.style.display = "none";
+        tumorLocationContainer.style.display = "none";
         metastasisContainer.style.display = "flex";
     }
 }
