@@ -89,7 +89,8 @@ function renderApp() {
                     </label>
                 </div>
 
-                <div class="form-group">
+                <!-- 程氏分型和肿瘤数量，仅在 IIIa 时显示 -->
+                <div id="portalVeinTypeContainer" class="form-group">
                     <label>程氏分型:
                         <select id="portalVeinType">
                             <option value="I">I</option>
@@ -100,7 +101,7 @@ function renderApp() {
                     </label>
                 </div>
 
-                <div class="form-group">
+                <div id="tumorCountContainer" class="form-group">
                     <label>肿瘤数量:
                         <input id="tumorCount" type="number" value="2" min="1" required>
                     </label>
@@ -115,7 +116,8 @@ function renderApp() {
                     </label>
                 </div>
 
-                <div id="metastasisContainer" class="form-section" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- 转移病灶数量和受累器官，仅在 IIIb 时显示 -->
+                <div id="metastasisContainer" class="form-section" style="display: none;">
                     <div class="form-group">
                         <label>转移病灶数量:
                             <input id="metastasisCount" type="number" value="0" min="0" required>
@@ -143,12 +145,18 @@ function renderApp() {
 
 function toggleFields() {
     const stage = document.getElementById("stage").value;
+    const portalVeinTypeContainer = document.getElementById("portalVeinTypeContainer");
+    const tumorCountContainer = document.getElementById("tumorCountContainer");
     const metastasisContainer = document.getElementById("metastasisContainer");
 
-    // 根据分期动态显示转移病灶和受累器官
+    // 根据分期动态显示/隐藏特定字段
     if (stage === "IIIa") {
+        portalVeinTypeContainer.style.display = "block";
+        tumorCountContainer.style.display = "block";
         metastasisContainer.style.display = "none";
     } else if (stage === "IIIb") {
+        portalVeinTypeContainer.style.display = "none";
+        tumorCountContainer.style.display = "none";
         metastasisContainer.style.display = "flex";
     }
 }
