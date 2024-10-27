@@ -56,16 +56,19 @@ function renderApp() {
                             <option value="IIIb">IIIb</option>
                         </select>
                     </label>
-                    <label>Child-Pugh评分: 
-                        <input id="childPughScore" type="number" value="7" min="5" max="15" required>
-                    </label>
-                    <label>Child-Pugh级别:
-                        <select id="childPughGrade">
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                        </select>
-                    </label>
+                    
+                    <div id="childPughContainer">
+                        <label>Child-Pugh评分:
+                            <input id="childPughScore" type="number" value="7" min="5" max="15" required>
+                        </label>
+                        <label>Child-Pugh级别:
+                            <select id="childPughGrade">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                            </select>
+                        </label>
+                    </div>
+                    
                     <label>是否有肝外转移:
                         <select id="hasExtrahepaticMetastasis">
                             <option value="false">否</option>
@@ -75,11 +78,11 @@ function renderApp() {
                 </div>
                 
                 <!-- 患者体力评分与肿瘤信息 -->
-                <div class="form-section">
+                <div id="psScoreContainer" class="form-section">
                     <label>PS评分:
                         <input id="psScore" type="number" value="0" min="0" max="4" required>
                     </label>
-                    <label>门静脉类型:
+                    <label>程氏分型:
                         <select id="portalVeinType">
                             <option value="I">I</option>
                             <option value="II">II</option>
@@ -99,7 +102,7 @@ function renderApp() {
                 </div>
                 
                 <!-- 转移和受累器官信息 -->
-                <div class="form-section">
+                <div id="metastasisContainer" class="form-section">
                     <label>转移病灶数量:
                         <input id="metastasisCount" type="number" value="0" min="0" required>
                     </label>
@@ -115,26 +118,50 @@ function renderApp() {
         </div>
     `;
 
-    // 添加按钮点击事件监听器
-    document.getElementById("submit").addEventListener("click", () => {
-        const patient = new Patient(
-            document.getElementById("stage").value,
-            parseInt(document.getElementById("childPughScore").value),
-            document.getElementById("childPughGrade").value,
-            document.getElementById("hasExtrahepaticMetastasis").value === "true",
-            parseInt(document.getElementById("psScore").value),
-            document.getElementById("portalVeinType").value,
-            parseInt(document.getElementById("tumorCount").value),
-            document.getElementById("tumorLocation").value,
-            parseInt(document.getElementById("metastasisCount").value),
-            parseInt(document.getElementById("affectedOrgans").value)
-        );
+    // 绑定事件监听器
+    document.getElementById("stage").addEventListener("change", toggleFields);
+    document.getElementById("submit").addEventListener("click", submitForm);
 
-        const assignedQueue = assignQueue(patient);
-        document.getElementById("result").innerText = assignedQueue 
-            ? `分配的队列: ${assignedQueue}` 
-            : "未找到匹配的队列";
-    });
+    toggleFields();  // 初始时根据默认值更新可见性
+}
+
+function toggleFields() {
+    const stage = document.getElementById("stage").value;
+    const childPughContainer = document.getElementById("childPughContainer");
+    const psScoreContainer = document.getElementById("psScoreContainer");
+    const metastasisContainer = document.getElementById("metastasisContainer");
+
+    if (stage === "IIIa") {
+        // 隐藏Child-Pugh评分、PS评分、转移病灶信息
+        childPughContainer.style.display = "none";
+        psScoreContainer.style.display = "none";
+        metastasisContainer.style.display = "none";
+    } else {
+        // 显示所有选项
+        childPughContainer.style.display = "flex";
+        psScoreContainer.style.display = "flex";
+        metastasisContainer.style.display = "flex";
+    }
+}
+
+function submitForm() {
+    const patient = new Patient(
+        document.getElementById("stage").value,
+        parseInt(document.getElementById("childPughScore").value),
+        document.getElementById("childPughGrade").value,
+        document.getElementById("hasExtrahepaticMetastasis").value === "true",
+        parseInt(document.getElementById("psScore").value),
+        document.getElementById("portalVeinType").value,
+        parseInt(document.getElementById("tumorCount").value),
+        document.getElementById("tumorLocation").value,
+        parseInt(document.getElementById("metastasisCount").value),
+        parseInt(document.getElementById("affectedOrgans").value)
+    );
+
+    const assignedQueue = assignQueue(patient);
+    document.getElementById("result").innerText = assignedQueue 
+        ? `分配的队列: ${assignedQueue}` 
+        : "未找到匹配的队列";
 }
 
 renderApp();
