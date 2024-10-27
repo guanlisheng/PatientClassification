@@ -48,40 +48,48 @@ function renderApp() {
         <div class="container">
             <h1 class="title">患者分配系统</h1>
             <form id="patientForm">
-                <!-- 患者基础信息 -->
-                <div class="form-section">
+                <!-- 分期选择 -->
+                <div class="form-group">
                     <label>分期:
                         <select id="stage">
                             <option value="IIIa">IIIa</option>
                             <option value="IIIb">IIIb</option>
                         </select>
                     </label>
-                    
-                    <!-- Child-Pugh评分 -->
-                    <div class="form-group" id="childPughScoreContainer" style="flex-direction: column; gap: 10px;">
-                        <label>Child-Pugh评分: 
-                            <input id="childPughScore" type="number" value="7" min="5" max="15" required>
-                        </label>
-                        <label>Child-Pugh级别:
-                            <select id="childPughGrade">
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                            </select>
-                        </label>
-                    </div>
-                    
-                    <!-- 其他信息 -->
+                </div>
+
+                <!-- Child-Pugh评分和级别 -->
+                <div class="form-group">
+                    <label>Child-Pugh评分:
+                        <input id="childPughScore" type="number" value="7" min="5" max="15" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Child-Pugh级别:
+                        <select id="childPughGrade">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                    </label>
+                </div>
+
+                <!-- 其他信息 -->
+                <div class="form-group">
                     <label>是否有肝外转移:
                         <select id="hasExtrahepaticMetastasis">
                             <option value="false">否</option>
                             <option value="true">是</option>
                         </select>
                     </label>
-                    
+                </div>
+
+                <div class="form-group">
                     <label>PS评分:
                         <input id="psScore" type="number" value="0" min="0" max="4" required>
                     </label>
-                    
+                </div>
+
+                <div class="form-group">
                     <label>程氏分型:
                         <select id="portalVeinType">
                             <option value="I">I</option>
@@ -90,22 +98,30 @@ function renderApp() {
                             <option value="IV">IV</option>
                         </select>
                     </label>
-                    
+                </div>
+
+                <div class="form-group">
                     <label>肿瘤数量:
                         <input id="tumorCount" type="number" value="2" min="1" required>
                     </label>
-                    
+                </div>
+
+                <div class="form-group">
                     <label>肿瘤位置:
                         <select id="tumorLocation">
                             <option value="半肝">半肝</option>
                             <option value="全肝">全肝</option>
                         </select>
                     </label>
-                    
-                    <div id="metastasisContainer" class="form-section" style="display: flex; flex-direction: column; gap: 10px;">
+                </div>
+
+                <div id="metastasisContainer" class="form-section" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="form-group">
                         <label>转移病灶数量:
                             <input id="metastasisCount" type="number" value="0" min="0" required>
                         </label>
+                    </div>
+                    <div class="form-group">
                         <label>受累器官数量:
                             <input id="affectedOrgans" type="number" value="0" min="0" required>
                         </label>
@@ -127,15 +143,13 @@ function renderApp() {
 
 function toggleFields() {
     const stage = document.getElementById("stage").value;
-    const childPughScoreContainer = document.getElementById("childPughScoreContainer");
+    const metastasisContainer = document.getElementById("metastasisContainer");
 
+    // 根据分期动态显示转移病灶和受累器官
     if (stage === "IIIa") {
-        // 隐藏Child-Pugh相关选项
-        childPughScoreContainer.style.display = "none";
+        metastasisContainer.style.display = "none";
     } else if (stage === "IIIb") {
-        // 显示Child-Pugh相关选项，确保样式一致
-        childPughScoreContainer.style.display = "flex";
-        childPughScoreContainer.style.gap = "10px"; // 调整元素间距
+        metastasisContainer.style.display = "flex";
     }
 }
 
