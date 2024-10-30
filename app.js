@@ -58,6 +58,12 @@ function renderApp() {
                     </label>
                 </div>
 
+                <div class="form-group">
+                    <label>PS评分:
+                        <input id="psScore" type="number" value="0" min="0" max="4" required>
+                    </label>
+                </div>
+
                 <!-- Child-Pugh评分和级别 -->
                 <div class="form-group">
                     <label>Child-Pugh评分:
@@ -80,12 +86,6 @@ function renderApp() {
                             <option value="false">否</option>
                             <option value="true">是</option>
                         </select>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label>PS评分:
-                        <input id="psScore" type="number" value="0" min="0" max="4" required>
                     </label>
                 </div>
 
