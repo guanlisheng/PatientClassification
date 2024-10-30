@@ -16,29 +16,50 @@ class Patient {
 
 // 队列判断逻辑
 function assignQueue(patient) {
-    if (patient.stage === "IIIa" && patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2 && !patient.hasExtrahepaticMetastasis && matchesQueueA(patient)) {
-        return "A";
+    if (patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2) {
+        return null;
     }
-    if (patient.stage === "IIIa" && patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2 && !matchesQueueA(patient)) {
-        return "B";
+    if (patient.stage === "IIIa" && matchesQueueA1(patient)) {
+        return "IIIa1";
     }
-    if (patient.stage === "IIIb" && patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2 && matchesQueueC(patient)) {
-        return "C";
+    if (patient.stage === "IIIa" && matchesQueueA2(patient)) {
+        return "IIIa2";
     }
-    if (patient.stage === "IIIb" && patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2 && !matchesQueueC(patient)) {
-        return "D";
+    if (patient.stage === "IIIa" && matchesQueueA3(patient)) {
+        return "IIIa3";
+    }
+    if (patient.stage === "IIIb" && matchesQueueB1(patient)) {
+        return "IIIb1";
+    }
+    if (patient.stage === "IIIb" && !matchesQueueB1(patient)) {
+        return "IIIb2";
     }
     return null;
 }
 
-// 队列 A 的判断逻辑
-function matchesQueueA(patient) {
+// 队列 A1 的判断逻辑
+function matchesQueueA1(patient) {
     return (patient.portalVeinType === "I" || patient.portalVeinType === "II") && patient.tumorCount <= 3 && patient.tumorLocation === "半肝";
 }
 
-// 队列 C 的判断逻辑
-function matchesQueueC(patient) {
-    return patient.metastasisCount <= 5 && patient.affectedOrgans <= 2 && !patient.hasExtrahepaticMetastasis;
+// 队列 A2 的判断逻辑
+function matchesQueueA2(patient) {
+    return (patient.portalVeinType === "I" || patient.portalVeinType === "II") && (patient.tumorCount > 3 || patient.tumorLocation === "全肝");
+}
+
+// 队列 A3 的判断逻辑
+function matchesQueueA3(patient) {
+    return (patient.portalVeinType === "III" || patient.portalVeinType === "IV");
+}
+
+// 队列 B1 的判断逻辑
+function matchesQueueB1(patient) {
+    return (patient.affectedOrgans <= 2 && patient.metastasisCount <= 5) && patient.hasExtrahepaticMetastasis;
+}
+
+// 队列 B2 的判断逻辑
+function matchesQueueB2(patient) {
+    return (patient.affectedOrgans > 2 || patient.metastasisCount > 5 ) && patient.hasExtrahepaticMetastasis;
 }
 
 // 渲染表单和结果
@@ -59,7 +80,7 @@ function renderApp() {
                 </div>
 
                 <div class="form-group">
-                    <label>PS评分:
+                    <label>ECOG PS评分:
                         <input id="psScore" type="number" value="0" min="0" max="4" required>
                     </label>
                 </div>
@@ -80,14 +101,6 @@ function renderApp() {
                 </div>
 
                 <!-- 其他信息 -->
-                <div class="form-group">
-                    <label>是否有肝外转移:
-                        <select id="hasExtrahepaticMetastasis">
-                            <option value="false">否</option>
-                            <option value="true">是</option>
-                        </select>
-                    </label>
-                </div>
 
                 <!-- 程氏分型和肿瘤数量，仅在 IIIa 时显示 -->
                 <div id="portalVeinTypeContainer" class="form-group">
@@ -117,6 +130,14 @@ function renderApp() {
                 </div>
 
                 <!-- 转移病灶数量和受累器官，仅在 IIIb 时显示 -->
+                <div id="hasExtrahepaticMetastasisContainer" class="form-group" style="display: none;">
+                    <label>是否有肝外转移:
+                        <select id="hasExtrahepaticMetastasis">
+                            <option value="false">否</option>
+                            <option value="true">是</option>
+                        </select>
+                    </label>
+                </div>
                 <div id="metastasisContainer" class="form-section" style="display: none;">
                     <div class="form-group">
                         <label>转移病灶数量:
@@ -149,6 +170,7 @@ function toggleFields() {
     const tumorCountContainer = document.getElementById("tumorCountContainer");
     const tumorLocationContainer = document.getElementById("tumorLocationContainer");
     const metastasisContainer = document.getElementById("metastasisContainer");
+    const hasExtrahepaticMetastasisContainer = document.getElementById("hasExtrahepaticMetastasisContainer");
 
     // 根据分期动态显示/隐藏特定字段
     if (stage === "IIIa") {
@@ -156,11 +178,13 @@ function toggleFields() {
         tumorCountContainer.style.display = "block";
         tumorLocationContainer.style.display = "block";
         metastasisContainer.style.display = "none";
+        hasExtrahepaticMetastasisContainer.style.display = "none";
     } else if (stage === "IIIb") {
         portalVeinTypeContainer.style.display = "none";
         tumorCountContainer.style.display = "none";
         tumorLocationContainer.style.display = "none";
         metastasisContainer.style.display = "flex";
+        hasExtrahepaticMetastasisContainer.style.display = "flex";
     }
 }
 
