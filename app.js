@@ -189,23 +189,32 @@ function toggleFields() {
 }
 
 function submitForm() {
+    // 获取表单数据并创建 Patient 实例
     const patient = new Patient(
         document.getElementById("stage").value,
         parseInt(document.getElementById("childPughScore").value),
         document.getElementById("childPughGrade").value,
-        const hasExtrahepaticMetastasis = stage === "IIIb" ? document.getElementById("hasExtrahepaticMetastasis").value === "true" : false,
+        document.getElementById("hasExtrahepaticMetastasis").value === "true",
         parseInt(document.getElementById("psScore").value),
-        const portalVeinType = stage === "IIIa" ? document.getElementById("portalVeinType").value : null;
-        const tumorCount = stage === "IIIa" ? parseInt(document.getElementById("tumorCount").value) : 0;
-        const tumorLocation = stage === "IIIa" ? document.getElementById("tumorLocation").value : null,
-        const metastasisCount = stage === "IIIb" ? parseInt(document.getElementById("metastasisCount").value) : 0,
-        const affectedOrgans = stage === "IIIb" ? parseInt(document.getElementById("affectedOrgans").value) : 0
+        document.getElementById("portalVeinType").value,
+        parseInt(document.getElementById("tumorCount").value),
+        document.getElementById("tumorLocation").value,
+        parseInt(document.getElementById("metastasisCount").value),
+        parseInt(document.getElementById("affectedOrgans").value)
     );
 
+    // 将患者数据传递给队列分配逻辑函数
     const assignedQueue = assignQueue(patient);
-    document.getElementById("result").innerText = assignedQueue 
-        ? `分配的队列: ${assignedQueue}` 
-        : "未找到匹配的队列";
+
+    // 更新页面显示分配结果
+    const resultDiv = document.getElementById("result");
+    if (assignedQueue) {
+        resultDiv.innerText = `分配的队列: ${assignedQueue}`;
+        resultDiv.style.color = "green";
+    } else {
+        resultDiv.innerText = "未找到匹配的队列";
+        resultDiv.style.color = "red";
+    }
 }
 
 renderApp();
