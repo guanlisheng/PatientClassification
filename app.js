@@ -16,7 +16,7 @@ class Patient {
 
 // 队列判断逻辑
 function assignQueue(patient) {
-    if !(patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2) {
+    if (!(patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2)) {
         return null;
     }
     if (patient.stage === "IIIa" && matchesQueueA1(patient)) {
@@ -193,13 +193,13 @@ function submitForm() {
         document.getElementById("stage").value,
         parseInt(document.getElementById("childPughScore").value),
         document.getElementById("childPughGrade").value,
-        document.getElementById("hasExtrahepaticMetastasis").value === "true",
+        const hasExtrahepaticMetastasis = stage === "IIIb" ? document.getElementById("hasExtrahepaticMetastasis").value === "true" : false,
         parseInt(document.getElementById("psScore").value),
-        document.getElementById("portalVeinType").value,
-        parseInt(document.getElementById("tumorCount").value),
-        document.getElementById("tumorLocation").value,
-        parseInt(document.getElementById("metastasisCount").value),
-        parseInt(document.getElementById("affectedOrgans").value)
+        const portalVeinType = stage === "IIIa" ? document.getElementById("portalVeinType").value : null;
+        const tumorCount = stage === "IIIa" ? parseInt(document.getElementById("tumorCount").value) : 0;
+        const tumorLocation = stage === "IIIa" ? document.getElementById("tumorLocation").value : null,
+        const metastasisCount = stage === "IIIb" ? parseInt(document.getElementById("metastasisCount").value) : 0,
+        const affectedOrgans = stage === "IIIb" ? parseInt(document.getElementById("affectedOrgans").value) : 0
     );
 
     const assignedQueue = assignQueue(patient);
