@@ -16,7 +16,7 @@ class Patient {
 
 // 队列判断逻辑
 function assignQueue(patient) {
-    if (patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2) {
+    if !(patient.childPughScore <= 7 && patient.psScore >= 0 && patient.psScore <= 2) {
         return null;
     }
     if (patient.stage === "IIIa" && matchesQueueA1(patient)) {
