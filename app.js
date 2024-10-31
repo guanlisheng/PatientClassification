@@ -211,6 +211,11 @@ function submitForm() {
     if (assignedQueue) {
         resultDiv.innerText = `分配的队列: ${assignedQueue}`;
         resultDiv.style.color = "green";
+        // Log event for successful queue assignment
+        gtag('event', 'queue_assigned', {
+        'queue': assignedQueue,
+        'stage': patient.stage
+        });
     } else {
         resultDiv.innerText = "未找到匹配的队列";
         resultDiv.style.color = "red";
